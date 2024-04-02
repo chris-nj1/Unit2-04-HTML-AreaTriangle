@@ -1,44 +1,40 @@
-# Simple workflow for deploying static content to GitHub Pages
+###############################################
+
+# Run GitHub's Super Linter against code base #
+
+###############################################
 
 ---
-name: Deploy Pages
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+name: GitHub's Super Linter
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+on: push
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - name: Setup Pages
-        uses: actions/configure-pages@main
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@main
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@main
+
+ run-linters:
+
+   name: GitHub's Super Linter
+
+   runs-on: ubuntu-latest
+
+   steps:
+
+     - name: Check out Git repository
+
+       uses: actions/checkout@master
+
+     - name: Run GitHub Super Linter
+
+       uses: github/super-linter@main
+
+       env:
+
+         VALIDATE_ALL_CODEBASE: true
+
+         VALIDATE_JAVASCRIPT_STANDARD: false
+
+         VALIDATE_JSCPD: false
+
+         DEFAULT_BRANCH: main
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
